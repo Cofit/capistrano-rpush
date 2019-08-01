@@ -28,7 +28,7 @@ namespace :load do
 
       desc 'Config Rpush monit-service'
       task :config do
-        on roles(fetch(:rpush_roles)) do |role|
+        on roles(fetch(:rpush_role)) do |role|
           @role = role
           upload_rpush_template 'rpush_monit', "#{fetch(:tmp_dir)}/monit.conf", @role
 
@@ -41,7 +41,7 @@ namespace :load do
 
       desc 'Monitor Rpush monit-service'
       task :monitor do
-        on roles(fetch(:rpush_roles)) do
+        on roles(fetch(:rpush_role)) do
           fetch(:rpush_processes).times do |idx|
             begin
               sudo_if_needed "#{fetch(:monit_bin)} monitor #{rpush_service_name(idx)}"
@@ -55,7 +55,7 @@ namespace :load do
 
       desc 'Unmonitor Rpush monit-service'
       task :unmonitor do
-        on roles(fetch(:rpush_roles)) do
+        on roles(fetch(:rpush_role)) do
           fetch(:rpush_processes).times do |idx|
             begin
               sudo_if_needed "#{fetch(:monit_bin)} unmonitor #{rpush_service_name(idx)}"
@@ -68,7 +68,7 @@ namespace :load do
 
       desc 'Start Rpush monit-service'
       task :start do
-        on roles(fetch(:rpush_roles)) do
+        on roles(fetch(:rpush_role)) do
           fetch(:rpush_processes).times do |idx|
             sudo_if_needed "#{fetch(:monit_bin)} start #{rpush_service_name(idx)}"
           end
@@ -77,7 +77,7 @@ namespace :load do
 
       desc 'Stop Rpush monit-service'
       task :stop do
-        on roles(fetch(:rpush_roles)) do
+        on roles(fetch(:rpush_role)) do
           fetch(:rpush_processes).times do |idx|
             sudo_if_needed "#{fetch(:monit_bin)} stop #{rpush_service_name(idx)}"
           end
@@ -86,7 +86,7 @@ namespace :load do
 
       desc 'Restart Rpush monit-service'
       task :restart do
-        on roles(fetch(:rpush_roles)) do
+        on roles(fetch(:rpush_role)) do
           fetch(:rpush_processes).times do |idx|
             sudo_if_needed"#{fetch(:monit_bin)} restart #{rpush_service_name(idx)}"
           end
