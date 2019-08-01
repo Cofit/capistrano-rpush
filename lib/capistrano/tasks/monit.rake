@@ -164,5 +164,18 @@ namespace :load do
         template_path = search_paths.detect { |path| File.file?(path) }
         File.read(template_path)
       end
+
+      def rpush_pid_files
+        processes = fetch(:rpush_processes)
+        Array.new(processes) { |idx| fetch(:rpush_pid).gsub(/\.pid$/, "-#{idx}.pid") }
+      end
+
+      def rpush_user(role)
+        properties = role.properties
+        properties.fetch(:rpush_user) || # local property for rpush only
+          fetch(:rpush_user) ||
+          properties.fetch(:run_as) || # global property across multiple capistrano gems
+          role.user
+      end
     end
   end

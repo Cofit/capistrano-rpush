@@ -1,10 +1,9 @@
 # Monit configuration for Rpush :  <%= fetch(:application) %>
-<% pid_files.each_with_index do |pid_file, idx| %>
+<% rpush_pid_files.each_with_index do |pid_file, idx| %>
 check process <%= rpush_service_name(idx) %>
   with pidfile "<%= pid_file %>"
-  start program = "/bin/su - <%= rpush_user(@role) %> -c 'cd <%= current_path %> && <%= SSHKit.config.command_map[:rpush] %> start -c <%= rpush_config %> -p <%= pid_file %> -e <%= fetch(:rpush_env) %> '" with timeout 30 seconds
+  start program = "/bin/su - <%= rpush_user(@role) %> -c 'cd <%= current_path %> && <%= SSHKit.config.command_map[:rpush] %> start -p <%= pid_file %> -e <%= fetch(:rpush_env) %> <%= fetch(:rpush_foreground) ? '-f' : '' %>'" with timeout 30 seconds
 
   stop program = "/bin/su - <%= rpush_user(@role) %> -c 'cd <%= current_path %> && <%= SSHKit.config.command_map[:rpush] %> stop -p <%= pid_file %>'" with timeout <%= fetch(:rpush_timeout).to_i + 10  %> seconds
   group <%= fetch(:rpush_monit_group) || fetch(:application) %>-rpush
-
 <% end %>
