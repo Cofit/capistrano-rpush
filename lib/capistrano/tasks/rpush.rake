@@ -70,4 +70,9 @@ namespace :rpush do
       end
     end
   end
+
+  def pid_files
+    processes = fetch(:rpush_processes)
+    Array.new(processes) { |idx| fetch(:rpush_pid).gsub(/\.pid$/, "-#{idx}.pid") }
+  end
 end
