@@ -23,8 +23,9 @@ class Capistrano::Rpush < Capistrano::Plugin
   end
 
   def register_hooks
-    # after 'deploy:check',    'rpush:check'
-    # after 'deploy:finished', 'rpush:restart'
+    after 'deploy:check',    'rpush:check'
+    after 'deploy:updated',   'rpush:stop'
+    after 'deploy:published', 'rpush:start'
   end
 
 end
