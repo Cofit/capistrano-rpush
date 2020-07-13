@@ -24,7 +24,7 @@ namespace :load do
       task :add_default_hooks do
         before 'deploy:updating',  'rpush:monit:unmonitor'
         after  'deploy:published', 'rpush:monit:monitor'
-        after  'deploy:published', 'rpush:monit:restart'
+        # after  'deploy:published', 'rpush:monit:restart'
       end
 
       desc 'Config Rpush monit-service'
